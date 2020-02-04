@@ -5,14 +5,14 @@ import ru.hse.spb.cli.Context
 class TokenVisitor : BashBaseVisitor<String>() {
 
     private fun replaceVariables(text: String): String {
-        return text.replace(Regex("\\$(\\S+)")) {
+        return text.replace(Regex("\\$([^$\\s]+)")) {
             val variable = it.groupValues[1]
             Context.getVariable(variable)
         }
     }
 
     override fun visitSingle(ctx: BashParser.SingleContext): String {
-        return replaceVariables(ctx.singleQuoted.joinToString(separator = "") { it.text })
+        return ctx.singleQuoted.joinToString(separator = "") { it.text }
     }
 
     override fun visitDouble(ctx: BashParser.DoubleContext): String {

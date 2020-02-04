@@ -2,7 +2,7 @@ package ru.hse.spb.cli
 
 object Context {
     private val variables: MutableMap<String, String> = mutableMapOf()
-    var shouldExit: Boolean = false
+    private var exitFlag: Boolean = false
 
     fun setVariable(variable: String, value: String) {
         variables[variable] = value
@@ -14,5 +14,13 @@ object Context {
 
     fun getVariables(): Map<String, String> {
         return variables.toMap()
+    }
+
+    fun exit() {
+        exitFlag = true
+    }
+
+    fun shouldExit(): Boolean {
+        return exitFlag
     }
 }

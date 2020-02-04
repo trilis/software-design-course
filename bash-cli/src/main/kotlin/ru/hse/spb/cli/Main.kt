@@ -5,11 +5,15 @@ import java.util.*
 
 fun main() {
     val scanner = Scanner(System.`in`)
-    while (!Context.shouldExit) {
-        val instruction = InstructionParser.parseInstruction(scanner.nextLine())
-        val result = instruction.run().joinToString(separator = System.lineSeparator())
-        if (result.isNotEmpty()) {
-            println(result)
+    while (!Context.shouldExit()) {
+        try {
+            val instruction = InstructionParser.parseInstruction(scanner.nextLine())
+            val resultLines = instruction.run()
+            if (resultLines.isNotEmpty()) {
+                println(resultLines.joinToString(separator = System.lineSeparator()))
+            }
+        } catch (e: BashCLIException) {
+            println(e.message)
         }
     }
 }

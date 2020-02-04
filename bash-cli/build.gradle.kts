@@ -13,6 +13,7 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("org.antlr:antlr4-runtime:4.7")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.6.0")
     antlr("org.antlr:antlr4:4.7")
 }
 
@@ -30,5 +31,8 @@ tasks {
     }
     compileTestKotlin {
         kotlinOptions.jvmTarget = "1.8"
+    }
+    test {
+        useJUnitPlatform()
     }
 }

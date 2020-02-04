@@ -6,15 +6,17 @@ import java.io.IOException
 import java.io.InputStreamReader
 
 class UnknownCommand(private val name: String, private val arguments: List<String>) : Command {
+
     override fun run(input: List<String>): List<String> {
         val processBuilder = ProcessBuilder(name, *arguments.toTypedArray())
-        processBuilder.environment().clear()
         processBuilder.environment().putAll(Context.getVariables())
-
-        val process = processBuilder.start()
-        process.waitFor()
-
         try {
+            val process = processBuilder.start()
+            process.outputStream.write(
+                input.joinToString(separator = System.lineSeparator()).toByteArray()
+            )
+            process.outputStream.close()
+            process.waitFor()
             return InputStreamReader(process.inputStream).useLines { lines ->
                 lines.toList()
             } + InputStreamReader(process.errorStream).useLines { lines ->

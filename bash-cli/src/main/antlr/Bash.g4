@@ -1,5 +1,19 @@
 grammar Bash;
 
+@parser::members
+{
+    @Override
+    public void notifyErrorListeners(Token offendingToken, String msg, RecognitionException ex) {
+        throw new IllegalStateException(msg);
+    }
+}
+@lexer::members {
+    @Override
+    public void recover(RecognitionException ex) {
+        throw new IllegalStateException(ex.getMessage());
+    }
+}
+
 instruction:
     pipeline
     | assignment
