@@ -1,7 +1,6 @@
 grammar Bash;
 
-@parser::members
-{
+@parser::members {
     @Override
     public void notifyErrorListeners(Token offendingToken, String msg, RecognitionException ex) {
         throw new IllegalStateException(msg);
