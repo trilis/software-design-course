@@ -30,11 +30,6 @@ class CommandTests {
             listOf(System.getProperty("user.dir")),
             PwdCommand().run(listOf())
         )
-        UnknownCommand("cd", listOf("src")).run(listOf())
-        assertListEquals(
-            listOf(System.getProperty("user.dir")),
-            PwdCommand().run(listOf())
-        )
     }
 
     @Test
