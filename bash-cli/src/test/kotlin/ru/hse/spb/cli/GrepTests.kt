@@ -116,7 +116,10 @@ class GrepTests {
     }
 
     @Test
-    fun testNonExistingFile() {
+    fun testInvalid() {
+        assertThrows<ParserException> {
+            runStringAsCommand("grep -A -5 main ${resourcesDirectory}/build_gradle.txt")
+        }
         assertThrows<InterpreterException> {
             runStringAsCommand("grep . unknown.txt")
         }
