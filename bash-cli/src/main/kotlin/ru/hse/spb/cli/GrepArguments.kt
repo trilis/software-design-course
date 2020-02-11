@@ -43,7 +43,9 @@ class GrepArguments {
     )
     private var afterContextLines: Int? = null
 
-    @Parameter
+    @Parameter(
+        required = true
+    )
     private var otherArguments: MutableList<String> = mutableListOf()
 
     /**

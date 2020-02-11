@@ -120,6 +120,12 @@ class GrepTests {
         assertThrows<ParserException> {
             runStringAsCommand("grep -A -5 main ${resourcesDirectory}/build_gradle.txt")
         }
+        assertThrows<ParserException> {
+            runStringAsCommand("grep -A 5")
+        }
+        assertThrows<ParserException> {
+            runStringAsCommand("grep")
+        }
         assertThrows<InterpreterException> {
             runStringAsCommand("grep . unknown.txt")
         }

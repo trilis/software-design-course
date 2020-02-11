@@ -1,8 +1,10 @@
 package ru.hse.spb.cli.commands
 
 import com.beust.jcommander.JCommander
+import com.beust.jcommander.ParameterException
 import ru.hse.spb.cli.GrepArguments
 import ru.hse.spb.cli.InterpreterException
+import ru.hse.spb.cli.ParserException
 import java.io.FileReader
 import java.io.IOException
 
@@ -17,7 +19,11 @@ class GrepCommand(rawArgumentTokens: List<String>) : Command {
     private var parsedArguments = GrepArguments()
 
     init {
-        JCommander.newBuilder().addObject(parsedArguments).build().parse(*rawArgumentTokens.toTypedArray())
+        try {
+            JCommander.newBuilder().addObject(parsedArguments).build().parse(*rawArgumentTokens.toTypedArray())
+        } catch (e: ParameterException) {
+            throw ParserException("pattern is required")
+        }
     }
 
     private fun checkIfMatches(line: String): Boolean {
