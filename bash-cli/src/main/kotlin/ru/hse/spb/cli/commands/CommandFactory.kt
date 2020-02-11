@@ -17,6 +17,7 @@ object CommandFactory {
             "cat" -> CatCommand(arguments)
             "echo" -> EchoCommand(arguments)
             "exit" -> ExitCommand()
+            "grep" -> GrepCommand(arguments)
             "pwd" -> PwdCommand()
             "wc" -> WcCommand(arguments)
             else -> UnknownCommand(name, arguments)
