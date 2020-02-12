@@ -69,9 +69,9 @@ class IntegrationTests {
             runStringAsCommand("echo 123 | wc")
         )
         assertListEquals(
-            listOf("aba", "caba", "daba"),
+            listOf("aba", "caba"),
             runStringAsCommand(
-                "cat $resourcesDirectory/multi_line.txt | grep \"aba\""
+                "cat $resourcesDirectory/multi_line.txt | head -n 2"
             )
         )
     }
