@@ -104,12 +104,12 @@ class GrepTests {
                 "src/test/resources/build_gradle.txt:    outputDirectory = File(\"\$buildDir/generated-src/antlr/main/ru/hse/spb/cli/parser\")",
                 "src/test/resources/build_gradle.txt-}",
                 "src/test/resources/build_gradle.txt-",
-                "src/test/resources/readme.txt:В функции `main` инструкции обрабатываются по циклу. Каждая инструкция от пользователя проходит через модуль парсинга, а затем исполняется, результат команды выводится. Все части проекта имеют доступ к общему контексту `Context`, в котором хранятся environment variables и exit flag.",
+                "src/test/resources/readme.txt:`main`",
                 "src/test/resources/readme.txt-",
-                "src/test/resources/readme.txt-#### Парсинг",
-                "src/test/resources/readme.txt:`ExitCommand` выставляет в true exit flag в `Context`. `main` после выполнения каждой инструкции проверяет, выставлен ли этот флаг, если да, то завершается.",
+                "src/test/resources/readme.txt-####",
+                "src/test/resources/readme.txt:`ExitCommand``Context``main`",
                 "src/test/resources/readme.txt-",
-                "src/test/resources/readme.txt-При вызове остальных команд взаимодействия с другими частями программы не происходит."
+                "src/test/resources/readme.txt-."
             ),
             runStringAsCommand("grep -A 2 main ${resourcesDirectory}/build_gradle.txt ${resourcesDirectory}/readme.txt")
         )
