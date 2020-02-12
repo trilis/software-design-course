@@ -17,9 +17,7 @@ class WcCommand(private val fileNames: List<String>) : Command {
     private fun count(lines: List<String>): String {
         val lineCount = lines.size
         val wordCount = lines.map { StringTokenizer(it).countTokens() }.sum()
-        val byteCount = lines.map {
-            (it + System.lineSeparator()).toByteArray(Charset.defaultCharset()).size
-        }.sum()
+        val byteCount = lines.map { it.toByteArray().size }.sum()
         return "$lineCount $wordCount $byteCount"
     }
 

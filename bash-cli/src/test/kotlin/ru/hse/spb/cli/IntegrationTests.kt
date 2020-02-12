@@ -59,13 +59,13 @@ class IntegrationTests {
     @Test
     fun testPipeline() {
         assertListEquals(
-            listOf("1 3 18"),
+            listOf("1 3 17"),
             runStringAsCommand(
                 "cat $resourcesDirectory/single_line.txt | wc"
             )
         )
         assertListEquals(
-            listOf("1 1 4"),
+            listOf("1 1 3"),
             runStringAsCommand("echo 123 | wc")
         )
         assertListEquals(

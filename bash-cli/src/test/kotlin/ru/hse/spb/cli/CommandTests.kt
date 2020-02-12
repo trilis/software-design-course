@@ -73,11 +73,6 @@ class CommandTests {
         )
 
         assertListEquals(
-            listOf("съешь ещё этих мягких французских булок, да выпей чаю"),
-            CatCommand(listOf("$resourcesDirectory/russian.txt")).run(listOf())
-        )
-
-        assertListEquals(
             listOf("123", "456"),
             CatCommand(listOf()).run(listOf("123", "456"))
         )
@@ -94,20 +89,15 @@ class CommandTests {
             WcCommand(listOf("$resourcesDirectory/empty.txt")).run(listOf())
         )
         assertListEquals(
-            listOf("1 3 18 $resourcesDirectory/single_line.txt"),
+            listOf("1 3 17 $resourcesDirectory/single_line.txt"),
             WcCommand(listOf("$resourcesDirectory/single_line.txt")).run(listOf())
         )
         assertListEquals(
-            listOf("3 3 14 $resourcesDirectory/multi_line.txt"),
+            listOf("3 3 11 $resourcesDirectory/multi_line.txt"),
             WcCommand(listOf("$resourcesDirectory/multi_line.txt")).run(listOf())
         )
         assertListEquals(
-            listOf("1 9 98 $resourcesDirectory/russian.txt"),
-            WcCommand(listOf("$resourcesDirectory/russian.txt")).run(listOf())
-        )
-
-        assertListEquals(
-            listOf("1 1 4"),
+            listOf("1 1 3"),
             WcCommand(listOf()).run(listOf("123"))
         )
         assertListEquals(
