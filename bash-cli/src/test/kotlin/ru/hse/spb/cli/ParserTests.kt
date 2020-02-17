@@ -52,4 +52,13 @@ class ParserTests {
             InstructionParser.parseInstruction("")
         }
     }
+
+    @Test
+    fun testVariableInEndingOfToken() {
+        runStringAsCommand("x=1")
+
+        assertEquals("aaa1", tokenize("\"aaa\$x\""))
+        assertEquals("'1231'", tokenize("\"'123\$x'\""))
+        assertEquals("1231'", tokenize("\"123\$x'\""))
+    }
 }

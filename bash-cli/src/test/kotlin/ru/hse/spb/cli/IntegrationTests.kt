@@ -1,6 +1,7 @@
 package ru.hse.spb.cli
 
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertDoesNotThrow
 import org.junit.jupiter.api.assertThrows
 import ru.hse.spb.cli.TestUtils.assertListEquals
 import ru.hse.spb.cli.TestUtils.resourcesDirectory
@@ -68,11 +69,22 @@ class IntegrationTests {
             listOf("1 1 3"),
             runStringAsCommand("echo 123 | wc")
         )
-        assertListEquals(
-            listOf("aba", "caba"),
-            runStringAsCommand(
-                "cat $resourcesDirectory/multi_line.txt | head -n 2"
-            )
-        )
     }
+
+    @Test
+    fun testPipelineWithUnknownCommands() {
+        assertDoesNotThrow {
+            runStringAsCommand("git tag AAA")
+            runStringAsCommand("git tag bbb")
+        }
+        assertListEquals(
+            listOf("2 2 6"),
+            runStringAsCommand("git tag | wc")
+        )
+        assertDoesNotThrow {
+            runStringAsCommand("git tag -d AAA")
+            runStringAsCommand("git tag -d bbb")
+        }
+    }
+
 }

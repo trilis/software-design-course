@@ -9,7 +9,7 @@ import ru.hse.spb.cli.InterpreterException
 class TokenVisitor : BashBaseVisitor<String>() {
 
     private fun replaceVariables(text: String): String {
-        return text.replace(Regex("\\$([^$\\s]+)")) {
+        return text.replace(Regex("\\$([^$\\s']+)")) {
             val variable = it.groupValues[1]
             Context.getVariable(variable)
         }

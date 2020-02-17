@@ -108,12 +108,11 @@ class CommandTests {
 
     @Test
     fun testUnknownCommand() {
-        assertListEquals(
-            listOf("Bash.g4"),
-            UnknownCommand("ls", listOf("src/main/antlr")).run(listOf())
-        )
         assertDoesNotThrow {
-            UnknownCommand("gradlew", listOf())
+            UnknownCommand("git", listOf()).run(listOf())
+        }
+        assertDoesNotThrow {
+            UnknownCommand("gradle", listOf()).run(listOf())
         }
     }
 
