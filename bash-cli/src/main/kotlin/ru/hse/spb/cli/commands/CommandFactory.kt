@@ -1,5 +1,7 @@
 package ru.hse.spb.cli.commands
 
+import ru.hse.spb.cli.Context
+
 /**
  * Factory for creating instances of [Command].
  */
@@ -12,14 +14,14 @@ object CommandFactory {
      * @param arguments arguments of this command.
      * @return created command.
      */
-    fun createCommand(name: String, arguments: List<String>): Command {
+    fun createCommand(name: String, arguments: List<String>, context: Context): Command {
         return when (name) {
             "cat" -> CatCommand(arguments)
             "echo" -> EchoCommand(arguments)
-            "exit" -> ExitCommand()
+            "exit" -> ExitCommand(context)
             "pwd" -> PwdCommand()
             "wc" -> WcCommand(arguments)
-            else -> UnknownCommand(name, arguments)
+            else -> UnknownCommand(name, arguments, context)
         }
     }
 }

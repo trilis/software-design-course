@@ -11,7 +11,11 @@ import java.io.InputStreamReader
  * @param name name of this command.
  * @param arguments arguments of this command.
  */
-class UnknownCommand(private val name: String, private val arguments: List<String>) : Command {
+class UnknownCommand(
+    private val name: String,
+    private val arguments: List<String>,
+    private val context: Context
+) : Command {
 
     /**
      * This method executes command as a new [Process] on given [input].
@@ -23,7 +27,7 @@ class UnknownCommand(private val name: String, private val arguments: List<Strin
      */
     override fun run(input: List<String>): List<String> {
         val processBuilder = ProcessBuilder(name, *arguments.toTypedArray())
-        processBuilder.environment().putAll(Context.getVariables())
+        processBuilder.environment().putAll(context.getVariables())
         try {
             val process = processBuilder.start()
             process.outputStream.write(

@@ -13,52 +13,56 @@ import ru.hse.spb.cli.parser.TokenVisitor
 
 class ParserTests {
 
-    private fun tokenize(text: String): String {
+    private fun tokenize(text: String, context: Context = Context()): String {
         val reader = CharStreams.fromString(text)
         val parser = BashParser(CommonTokenStream(BashLexer(reader)))
-        return TokenVisitor().visit(parser.token())
+        return TokenVisitor(context).visit(parser.token())
     }
 
     @Test
     fun testTokens() {
-        runStringAsCommand("x=abc")
-        runStringAsCommand("y=def")
+        val context = Context()
 
-        assertEquals("qwerty", tokenize("qwerty"))
-        assertEquals("qwerty", tokenize("'qwerty'"))
-        assertEquals("qwerty", tokenize("\"qwerty\""))
+        runStringAsCommand("x=abc", context)
+        runStringAsCommand("y=def", context)
 
-        assertEquals("abcdef", tokenize("\$x\$y"))
-        assertEquals("\$x\$y", tokenize("'\$x\$y'"))
-        assertEquals("abc xxx def", tokenize("\"\$x xxx \$y\""))
+        assertEquals("qwerty", tokenize("qwerty", context))
+        assertEquals("qwerty", tokenize("'qwerty'", context))
+        assertEquals("qwerty", tokenize("\"qwerty\"", context))
+
+        assertEquals("abcdef", tokenize("\$x\$y", context))
+        assertEquals("\$x\$y", tokenize("'\$x\$y'", context))
+        assertEquals("abc xxx def", tokenize("\"\$x xxx \$y\"", context))
     }
 
     @Test
     fun testMismatchedQuote() {
         assertThrows<ParserException> {
-            InstructionParser.parseInstruction("echo '")
+            InstructionParser.parseInstruction("echo '", Context())
         }
         assertThrows<ParserException> {
-            InstructionParser.parseInstruction("echo \"")
+            InstructionParser.parseInstruction("echo \"", Context())
         }
         assertThrows<ParserException> {
-            InstructionParser.parseInstruction("echo 'xx\"")
+            InstructionParser.parseInstruction("echo 'xx\"", Context())
         }
     }
 
     @Test
     fun testEmptyString() {
         assertThrows<ParserException> {
-            InstructionParser.parseInstruction("")
+            InstructionParser.parseInstruction("", Context())
         }
     }
 
     @Test
     fun testVariableInEndingOfToken() {
-        runStringAsCommand("x=1")
+        val context = Context()
 
-        assertEquals("aaa1", tokenize("\"aaa\$x\""))
-        assertEquals("'1231'", tokenize("\"'123\$x'\""))
-        assertEquals("1231'", tokenize("\"123\$x'\""))
+        runStringAsCommand("x=1", context)
+
+        assertEquals("aaa1", tokenize("\"aaa\$x\"", context))
+        assertEquals("'1231'", tokenize("\"'123\$x'\"", context))
+        assertEquals("1231'", tokenize("\"123\$x'\"", context))
     }
 }

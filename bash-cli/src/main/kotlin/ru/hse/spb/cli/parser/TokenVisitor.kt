@@ -6,12 +6,12 @@ import ru.hse.spb.cli.InterpreterException
 /**
  * This visitor is responsible for transforming tokens replacing variable references with their values.
  */
-class TokenVisitor : BashBaseVisitor<String>() {
+class TokenVisitor(private val context: Context) : BashBaseVisitor<String>() {
 
     private fun replaceVariables(text: String): String {
         return text.replace(Regex("\\$([^$\\s']+)")) {
             val variable = it.groupValues[1]
-            Context.getVariable(variable)
+            context.getVariable(variable)
         }
     }
 

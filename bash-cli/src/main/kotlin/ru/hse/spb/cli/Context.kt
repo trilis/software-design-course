@@ -3,7 +3,7 @@ package ru.hse.spb.cli
 /**
  * Data shared between instructions.
  */
-object Context {
+class Context {
     private val variables: MutableMap<String, String> = mutableMapOf()
     private var exitFlag: Boolean = false
 

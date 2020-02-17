@@ -10,43 +10,51 @@ import ru.hse.spb.cli.TestUtils.runStringAsCommand
 class IntegrationTests {
     @Test
     fun testSimple() {
-        runStringAsCommand("FILE=example.txt")
+        val context = Context()
+
+        runStringAsCommand("FILE=example.txt", context)
         assertListEquals(
             listOf("example.txt"),
-            runStringAsCommand("echo \$FILE")
+            runStringAsCommand("echo \$FILE", context)
         )
     }
 
     @Test
     fun testQuoting() {
+        val context = Context()
+
         assertListEquals(
             listOf("\$FILE"),
-            runStringAsCommand("echo '\$FILE'")
+            runStringAsCommand("echo '\$FILE'", context)
         )
-        runStringAsCommand("FILE=example.txt")
+        runStringAsCommand("FILE=example.txt", context)
         assertListEquals(
             listOf("example.txt"),
-            runStringAsCommand("echo \"\$FILE\"")
+            runStringAsCommand("echo \"\$FILE\"", context)
         )
     }
 
     @Test
     fun testRewrite() {
-        runStringAsCommand("FILE=example.txt")
-        runStringAsCommand("FILE=example2.txt")
+        val context = Context()
+
+        runStringAsCommand("FILE=example.txt", context)
+        runStringAsCommand("FILE=example2.txt", context)
         assertListEquals(
             listOf("example2.txt"),
-            runStringAsCommand("echo \$FILE")
+            runStringAsCommand("echo \$FILE", context)
         )
     }
 
     @Test
     fun testPartsOfOneToken() {
-        runStringAsCommand("x=pw")
-        runStringAsCommand("y=d")
+        val context = Context()
+
+        runStringAsCommand("x=pw", context)
+        runStringAsCommand("y=d", context)
         assertListEquals(
             listOf(System.getProperty("user.dir")),
-            runStringAsCommand("\$x\$y")
+            runStringAsCommand("\$x\$y", context)
         )
     }
 

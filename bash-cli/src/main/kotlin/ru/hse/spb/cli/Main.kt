@@ -13,9 +13,10 @@ import java.util.*
  */
 fun main() {
     val scanner = Scanner(System.`in`)
-    while (!Context.shouldExit()) {
+    val context = Context()
+    while (!context.shouldExit()) {
         try {
-            val instruction = InstructionParser.parseInstruction(scanner.nextLine())
+            val instruction = InstructionParser.parseInstruction(scanner.nextLine(), context)
             val resultLines = instruction.run()
             if (resultLines.isNotEmpty()) {
                 println(resultLines.joinToString(separator = System.lineSeparator()))

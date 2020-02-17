@@ -14,7 +14,7 @@ internal object TestUtils {
         }
     }
 
-    fun runStringAsCommand(command: String): List<String> {
-        return InstructionParser.parseInstruction(command).run()
+    fun runStringAsCommand(command: String, context: Context = Context()): List<String> {
+        return InstructionParser.parseInstruction(command, context).run()
     }
 }
