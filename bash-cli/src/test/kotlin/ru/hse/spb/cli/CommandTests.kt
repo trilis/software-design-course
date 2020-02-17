@@ -18,9 +18,11 @@ class CommandTests {
 
     @Test
     fun testExit() {
-        assertFalse(Context.shouldExit())
-        ExitCommand().run(listOf())
-        assertTrue(Context.shouldExit())
+        val context = Context()
+
+        assertFalse(context.shouldExit())
+        ExitCommand(context).run(listOf())
+        assertTrue(context.shouldExit())
     }
 
     @Test
@@ -108,12 +110,8 @@ class CommandTests {
 
     @Test
     fun testUnknownCommand() {
-        assertListEquals(
-            listOf("Bash.g4"),
-            UnknownCommand("ls", listOf("src/main/antlr")).run(listOf())
-        )
         assertDoesNotThrow {
-            UnknownCommand("gradlew", listOf())
+            UnknownCommand("git", listOf(), Context()).run(listOf())
         }
     }
 
@@ -126,7 +124,7 @@ class CommandTests {
             WcCommand(listOf("unknown.txt")).run(listOf())
         }
         assertThrows<InterpreterException> {
-            UnknownCommand("unknown", listOf()).run(listOf())
+            UnknownCommand("unknown", listOf(), Context()).run(listOf())
         }
     }
 

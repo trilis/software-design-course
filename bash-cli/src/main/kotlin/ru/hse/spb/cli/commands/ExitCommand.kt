@@ -5,7 +5,7 @@ import ru.hse.spb.cli.Context
 /**
  * This command breaks loop of command execution.
  */
-class ExitCommand : Command {
+class ExitCommand(private val context: Context) : Command {
 
     /**
      * After executing this command and all commands that follow in current pipeline, application would stop.
@@ -13,7 +13,7 @@ class ExitCommand : Command {
      * @return empty list.
      */
     override fun run(input: List<String>): List<String> {
-        Context.exit()
+        context.exit()
         return listOf()
     }
 }
