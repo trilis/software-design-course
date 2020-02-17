@@ -111,9 +111,6 @@ class CommandTests {
         assertDoesNotThrow {
             UnknownCommand("git", listOf()).run(listOf())
         }
-        assertDoesNotThrow {
-            UnknownCommand("gradle", listOf()).run(listOf())
-        }
     }
 
     @Test
