@@ -13,6 +13,7 @@ import ru.hse.spb.cli.commands.ExitCommand
 import ru.hse.spb.cli.commands.PwdCommand
 import ru.hse.spb.cli.commands.UnknownCommand
 import ru.hse.spb.cli.commands.WcCommand
+import java.io.File
 
 class CommandTests {
 
@@ -27,11 +28,19 @@ class CommandTests {
 
     @Test
     fun testPwd() {
-        println(System.getProperty("user.dir"))
         assertListEquals(
             listOf(System.getProperty("user.dir")),
-            PwdCommand().run(listOf())
+            PwdCommand(Context()).run(listOf())
         )
+
+        run {
+            val context = Context()
+            context.currentDirectory = File("").absolutePath + File.separator + resourcesDirectory
+            assertListEquals(
+                listOf(System.getProperty("user.dir") + File.separator + resourcesDirectory),
+                PwdCommand(context).run(listOf())
+            )
+        }
     }
 
     @Test
@@ -54,15 +63,15 @@ class CommandTests {
     fun testCat() {
         assertListEquals(
             listOf(),
-            CatCommand(listOf("$resourcesDirectory/empty.txt")).run(listOf())
+            CatCommand(listOf("$resourcesDirectory/empty.txt"), Context()).run(listOf())
         )
         assertListEquals(
             listOf("some example text"),
-            CatCommand(listOf("$resourcesDirectory/single_line.txt")).run(listOf())
+            CatCommand(listOf("$resourcesDirectory/single_line.txt"), Context()).run(listOf())
         )
         assertListEquals(
             listOf("aba", "caba", "daba"),
-            CatCommand(listOf("$resourcesDirectory/multi_line.txt")).run(listOf())
+            CatCommand(listOf("$resourcesDirectory/multi_line.txt"), Context()).run(listOf())
         )
 
         assertListEquals(
@@ -70,42 +79,61 @@ class CommandTests {
             CatCommand(
                 listOf(
                     "$resourcesDirectory/multi_line.txt", "$resourcesDirectory/single_line.txt"
-                )
+                ),
+                Context()
             ).run(listOf())
         )
 
         assertListEquals(
             listOf("123", "456"),
-            CatCommand(listOf()).run(listOf("123", "456"))
+            CatCommand(listOf(), Context()).run(listOf("123", "456"))
         )
         assertListEquals(
             listOf(),
-            CatCommand(listOf("$resourcesDirectory/empty.txt")).run(listOf("123", "456"))
+            CatCommand(listOf("$resourcesDirectory/empty.txt"), Context()).run(listOf("123", "456"))
         )
+
+        run {
+            val context = Context()
+            context.currentDirectory = File("").absolutePath + File.separator + resourcesDirectory
+            assertListEquals(
+                listOf("aba", "caba", "daba"),
+                CatCommand(listOf("multi_line.txt"), context).run(listOf())
+            )
+        }
     }
 
     @Test
     fun testWc() {
         assertListEquals(
             listOf("0 0 0 $resourcesDirectory/empty.txt"),
-            WcCommand(listOf("$resourcesDirectory/empty.txt")).run(listOf())
+            WcCommand(listOf("$resourcesDirectory/empty.txt"), Context()).run(listOf())
         )
         assertListEquals(
             listOf("1 3 17 $resourcesDirectory/single_line.txt"),
-            WcCommand(listOf("$resourcesDirectory/single_line.txt")).run(listOf())
+            WcCommand(listOf("$resourcesDirectory/single_line.txt"), Context()).run(listOf())
         )
         assertListEquals(
             listOf("3 3 11 $resourcesDirectory/multi_line.txt"),
-            WcCommand(listOf("$resourcesDirectory/multi_line.txt")).run(listOf())
+            WcCommand(listOf("$resourcesDirectory/multi_line.txt"), Context()).run(listOf())
         )
         assertListEquals(
             listOf("1 1 3"),
-            WcCommand(listOf()).run(listOf("123"))
+            WcCommand(listOf(), Context()).run(listOf("123"))
         )
         assertListEquals(
             listOf("0 0 0 $resourcesDirectory/empty.txt"),
-            WcCommand(listOf("$resourcesDirectory/empty.txt")).run(listOf("123"))
+            WcCommand(listOf("$resourcesDirectory/empty.txt"), Context()).run(listOf("123"))
         )
+
+        run {
+            val context = Context()
+            context.currentDirectory = File("").absolutePath + File.separator + resourcesDirectory
+            assertListEquals(
+                listOf("3 3 11 multi_line.txt"),
+                WcCommand(listOf("multi_line.txt"), context).run(listOf())
+            )
+        }
     }
 
     @Test
@@ -113,19 +141,31 @@ class CommandTests {
         assertDoesNotThrow {
             UnknownCommand("git", listOf(), Context()).run(listOf())
         }
+
+        run {
+            val context = Context()
+            context.currentDirectory = File("").absolutePath + File.separator + resourcesDirectory
+            assertListEquals(
+                listOf(
+                    "aba",
+                    "caba",
+                    "daba"
+                ),
+                UnknownCommand("sort", listOf("multi_line.txt"), context).run(emptyList())
+            )
+        }
     }
 
     @Test
     fun testExceptions() {
         assertThrows<InterpreterException> {
-            CatCommand(listOf("unknown.txt")).run(listOf())
+            CatCommand(listOf("unknown.txt"), Context()).run(listOf())
         }
         assertThrows<InterpreterException> {
-            WcCommand(listOf("unknown.txt")).run(listOf())
+            WcCommand(listOf("unknown.txt"), Context()).run(listOf())
         }
         assertThrows<InterpreterException> {
             UnknownCommand("unknown", listOf(), Context()).run(listOf())
         }
     }
-
 }

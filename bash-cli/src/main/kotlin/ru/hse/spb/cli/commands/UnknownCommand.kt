@@ -2,6 +2,7 @@ package ru.hse.spb.cli.commands
 
 import ru.hse.spb.cli.Context
 import ru.hse.spb.cli.InterpreterException
+import java.io.File
 import java.io.IOException
 import java.io.InputStreamReader
 
@@ -10,6 +11,7 @@ import java.io.InputStreamReader
  *
  * @param name name of this command.
  * @param arguments arguments of this command.
+ * @param context context that has information about current directory
  */
 class UnknownCommand(
     private val name: String,
@@ -28,6 +30,7 @@ class UnknownCommand(
     override fun run(input: List<String>): List<String> {
         val processBuilder = ProcessBuilder(name, *arguments.toTypedArray())
         processBuilder.environment().putAll(context.getVariables())
+        processBuilder.directory(File(context.currentDirectory))
         try {
             val process = processBuilder.start()
             process.outputStream.write(

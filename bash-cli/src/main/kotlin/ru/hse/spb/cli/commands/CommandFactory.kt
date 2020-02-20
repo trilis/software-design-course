@@ -16,12 +16,14 @@ object CommandFactory {
      */
     fun createCommand(name: String, arguments: List<String>, context: Context): Command {
         return when (name) {
-            "cat" -> CatCommand(arguments)
+            "cat" -> CatCommand(arguments, context)
             "echo" -> EchoCommand(arguments)
             "exit" -> ExitCommand(context)
-            "grep" -> GrepCommand(arguments)
-            "pwd" -> PwdCommand()
-            "wc" -> WcCommand(arguments)
+            "grep" -> GrepCommand(arguments, context)
+            "pwd" -> PwdCommand(context)
+            "wc" -> WcCommand(arguments, context)
+            "cd" -> CdCommand(arguments, context)
+            "ls" -> LsCommand(arguments, context)
             else -> UnknownCommand(name, arguments, context)
         }
     }

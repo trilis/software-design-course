@@ -1,5 +1,6 @@
 package ru.hse.spb.cli.commands
 
+import ru.hse.spb.cli.Context
 import ru.hse.spb.cli.InterpreterException
 import java.io.FileReader
 import java.io.IOException
@@ -8,8 +9,9 @@ import java.io.IOException
  * This command simulates behaviour of 'cat' bash command, printing provided texts concatenated.
  *
  * @param fileNames names of files to be printed.
+ * @param context context that has information about current directory.
  */
-class CatCommand(private val fileNames: List<String>) : Command {
+class CatCommand(private val fileNames: List<String>, private val context: Context) : Command {
 
     /**
      * Executes this command.
@@ -25,7 +27,7 @@ class CatCommand(private val fileNames: List<String>) : Command {
         } else {
             try {
                 fileNames.flatMap { fileName ->
-                    FileReader(fileName).useLines { lines ->
+                    FileReader(context.toAbsoluteFileName(fileName)).useLines { lines ->
                         lines.toList()
                     }
                 }

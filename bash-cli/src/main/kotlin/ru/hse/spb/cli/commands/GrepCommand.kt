@@ -2,6 +2,7 @@ package ru.hse.spb.cli.commands
 
 import com.beust.jcommander.JCommander
 import com.beust.jcommander.ParameterException
+import ru.hse.spb.cli.Context
 import ru.hse.spb.cli.GrepArguments
 import ru.hse.spb.cli.InterpreterException
 import ru.hse.spb.cli.ParserException
@@ -13,8 +14,9 @@ import java.io.IOException
  *
  * @param rawArgumentTokens arguments of this command, provided as tokens. When this class is initialized,
  * these arguments would be parsed using JCommander, see [GrepArguments] for details.
+ * @param context context that has information about current directory.
  */
-class GrepCommand(rawArgumentTokens: List<String>) : Command {
+class GrepCommand(rawArgumentTokens: List<String>, private val context: Context) : Command {
 
     private var parsedArguments = GrepArguments()
 
@@ -63,7 +65,7 @@ class GrepCommand(rawArgumentTokens: List<String>) : Command {
     private fun findMatchesInFiles(fileNames: List<String>): List<String> {
         try {
             return fileNames.flatMap { fileName ->
-                FileReader(fileName).useLines { lines ->
+                FileReader(context.toAbsoluteFileName(fileName)).useLines { lines ->
                     if (fileNames.size == 1) {
                         findMatches(lines.toList())
                     } else {

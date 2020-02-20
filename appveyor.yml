@@ -1,8 +1,8 @@
 build_script:
-  - cd bash-cli && gradlew.bat assemble
+  - cd bash-cli && gradlew.bat -i -S --no-daemon assemble
 
 test_script:
-  - cd bash-cli && gradlew.bat check
+  - cd bash-cli && gradlew.bat -i -S --no-daemon check
 
 cache:
   - C:\Users\appveyor\.gradle

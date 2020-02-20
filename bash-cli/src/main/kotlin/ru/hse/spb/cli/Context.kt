@@ -1,11 +1,22 @@
 package ru.hse.spb.cli
 
+import java.io.File
+
 /**
  * Data shared between instructions.
  */
 class Context {
     private val variables: MutableMap<String, String> = mutableMapOf()
     private var exitFlag: Boolean = false
+    var currentDirectory: String = File("").absolutePath
+
+    fun toAbsoluteFileName(fileName: String): String {
+        return if (fileName.startsWith(File.separator)) {
+            fileName
+        } else {
+            "$currentDirectory${File.separator}$fileName"
+        }
+    }
 
     /**
      * Creates new environment variable with name [variable] if there wasn't one already
