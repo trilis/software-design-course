@@ -13,6 +13,7 @@ import ru.hse.spb.cli.commands.ExitCommand
 import ru.hse.spb.cli.commands.PwdCommand
 import ru.hse.spb.cli.commands.UnknownCommand
 import ru.hse.spb.cli.commands.WcCommand
+import java.io.File
 
 class CommandTests {
 
@@ -27,11 +28,19 @@ class CommandTests {
 
     @Test
     fun testPwd() {
-        println(System.getProperty("user.dir"))
         assertListEquals(
             listOf(System.getProperty("user.dir")),
             PwdCommand(Context()).run(listOf())
         )
+
+        run {
+            val context = Context()
+            context.currentDirectory = File("").absolutePath + File.separator + resourcesDirectory
+            assertListEquals(
+                listOf(System.getProperty("user.dir") + File.separator + resourcesDirectory),
+                PwdCommand(context).run(listOf())
+            )
+        }
     }
 
     @Test
@@ -83,6 +92,15 @@ class CommandTests {
             listOf(),
             CatCommand(listOf("$resourcesDirectory/empty.txt"), Context()).run(listOf("123", "456"))
         )
+
+        run {
+            val context = Context()
+            context.currentDirectory = File("").absolutePath + File.separator + resourcesDirectory
+            assertListEquals(
+                listOf("aba", "caba", "daba"),
+                CatCommand(listOf("multi_line.txt"), context).run(listOf())
+            )
+        }
     }
 
     @Test
@@ -107,12 +125,34 @@ class CommandTests {
             listOf("0 0 0 $resourcesDirectory/empty.txt"),
             WcCommand(listOf("$resourcesDirectory/empty.txt"), Context()).run(listOf("123"))
         )
+
+        run {
+            val context = Context()
+            context.currentDirectory = File("").absolutePath + File.separator + resourcesDirectory
+            assertListEquals(
+                listOf("3 3 11 multi_line.txt"),
+                WcCommand(listOf("multi_line.txt"), context).run(listOf())
+            )
+        }
     }
 
     @Test
     fun testUnknownCommand() {
         assertDoesNotThrow {
             UnknownCommand("git", listOf(), Context()).run(listOf())
+        }
+
+        run {
+            val context = Context()
+            context.currentDirectory = File("").absolutePath + File.separator + resourcesDirectory
+            assertListEquals(
+                listOf(
+                    "aba",
+                    "caba",
+                    "daba"
+                ),
+                UnknownCommand("sort", listOf("multi_line.txt"), context).run(emptyList())
+            )
         }
     }
 
@@ -128,5 +168,4 @@ class CommandTests {
             UnknownCommand("unknown", listOf(), Context()).run(listOf())
         }
     }
-
 }
