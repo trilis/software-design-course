@@ -30,7 +30,7 @@ class CommandTests {
         println(System.getProperty("user.dir"))
         assertListEquals(
             listOf(System.getProperty("user.dir")),
-            PwdCommand().run(listOf())
+            PwdCommand(Context()).run(listOf())
         )
     }
 
@@ -54,15 +54,15 @@ class CommandTests {
     fun testCat() {
         assertListEquals(
             listOf(),
-            CatCommand(listOf("$resourcesDirectory/empty.txt")).run(listOf())
+            CatCommand(listOf("$resourcesDirectory/empty.txt"), Context()).run(listOf())
         )
         assertListEquals(
             listOf("some example text"),
-            CatCommand(listOf("$resourcesDirectory/single_line.txt")).run(listOf())
+            CatCommand(listOf("$resourcesDirectory/single_line.txt"), Context()).run(listOf())
         )
         assertListEquals(
             listOf("aba", "caba", "daba"),
-            CatCommand(listOf("$resourcesDirectory/multi_line.txt")).run(listOf())
+            CatCommand(listOf("$resourcesDirectory/multi_line.txt"), Context()).run(listOf())
         )
 
         assertListEquals(
@@ -70,17 +70,18 @@ class CommandTests {
             CatCommand(
                 listOf(
                     "$resourcesDirectory/multi_line.txt", "$resourcesDirectory/single_line.txt"
-                )
+                ),
+                Context()
             ).run(listOf())
         )
 
         assertListEquals(
             listOf("123", "456"),
-            CatCommand(listOf()).run(listOf("123", "456"))
+            CatCommand(listOf(), Context()).run(listOf("123", "456"))
         )
         assertListEquals(
             listOf(),
-            CatCommand(listOf("$resourcesDirectory/empty.txt")).run(listOf("123", "456"))
+            CatCommand(listOf("$resourcesDirectory/empty.txt"), Context()).run(listOf("123", "456"))
         )
     }
 
@@ -88,23 +89,23 @@ class CommandTests {
     fun testWc() {
         assertListEquals(
             listOf("0 0 0 $resourcesDirectory/empty.txt"),
-            WcCommand(listOf("$resourcesDirectory/empty.txt")).run(listOf())
+            WcCommand(listOf("$resourcesDirectory/empty.txt"), Context()).run(listOf())
         )
         assertListEquals(
             listOf("1 3 17 $resourcesDirectory/single_line.txt"),
-            WcCommand(listOf("$resourcesDirectory/single_line.txt")).run(listOf())
+            WcCommand(listOf("$resourcesDirectory/single_line.txt"), Context()).run(listOf())
         )
         assertListEquals(
             listOf("3 3 11 $resourcesDirectory/multi_line.txt"),
-            WcCommand(listOf("$resourcesDirectory/multi_line.txt")).run(listOf())
+            WcCommand(listOf("$resourcesDirectory/multi_line.txt"), Context()).run(listOf())
         )
         assertListEquals(
             listOf("1 1 3"),
-            WcCommand(listOf()).run(listOf("123"))
+            WcCommand(listOf(), Context()).run(listOf("123"))
         )
         assertListEquals(
             listOf("0 0 0 $resourcesDirectory/empty.txt"),
-            WcCommand(listOf("$resourcesDirectory/empty.txt")).run(listOf("123"))
+            WcCommand(listOf("$resourcesDirectory/empty.txt"), Context()).run(listOf("123"))
         )
     }
 
@@ -118,10 +119,10 @@ class CommandTests {
     @Test
     fun testExceptions() {
         assertThrows<InterpreterException> {
-            CatCommand(listOf("unknown.txt")).run(listOf())
+            CatCommand(listOf("unknown.txt"), Context()).run(listOf())
         }
         assertThrows<InterpreterException> {
-            WcCommand(listOf("unknown.txt")).run(listOf())
+            WcCommand(listOf("unknown.txt"), Context()).run(listOf())
         }
         assertThrows<InterpreterException> {
             UnknownCommand("unknown", listOf(), Context()).run(listOf())

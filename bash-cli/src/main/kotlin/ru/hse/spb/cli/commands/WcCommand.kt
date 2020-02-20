@@ -1,5 +1,6 @@
 package ru.hse.spb.cli.commands
 
+import ru.hse.spb.cli.Context
 import ru.hse.spb.cli.InterpreterException
 import java.io.FileReader
 import java.io.IOException
@@ -12,7 +13,7 @@ import java.util.*
  *
  * @param fileNames names of files to be examined.
  */
-class WcCommand(private val fileNames: List<String>) : Command {
+class WcCommand(private val fileNames: List<String>, private val context: Context) : Command {
 
     private fun count(lines: List<String>): String {
         val lineCount = lines.size
@@ -37,7 +38,7 @@ class WcCommand(private val fileNames: List<String>) : Command {
         } else {
             try {
                 fileNames.map { fileName ->
-                    FileReader(fileName).useLines { lines ->
+                    FileReader(context.toAbsoluteFileName(fileName)).useLines { lines ->
                         "${count(lines.toList())} $fileName"
                     }
                 }
