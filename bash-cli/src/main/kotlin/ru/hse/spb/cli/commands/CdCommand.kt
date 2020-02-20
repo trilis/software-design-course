@@ -5,6 +5,12 @@ import ru.hse.spb.cli.InterpreterException
 import java.io.File
 import java.nio.file.Paths
 
+/**
+ * This command simulates behaviour of 'cd' bash command, changing current directory.
+ *
+ * @param arguments directory to move to. If empty, system `HOME` variable will be used.
+ * @param context context that has information about current directory.
+ */
 class CdCommand(private val arguments: List<String>, private val context: Context) : Command {
     override fun run(input: List<String>): List<String> {
         when {

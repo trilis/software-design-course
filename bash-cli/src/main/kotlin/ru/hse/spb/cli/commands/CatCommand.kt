@@ -9,6 +9,7 @@ import java.io.IOException
  * This command simulates behaviour of 'cat' bash command, printing provided texts concatenated.
  *
  * @param fileNames names of files to be printed.
+ * @param context context that has information about current directory.
  */
 class CatCommand(private val fileNames: List<String>, private val context: Context) : Command {
 

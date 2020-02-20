@@ -14,6 +14,7 @@ import java.io.IOException
  *
  * @param rawArgumentTokens arguments of this command, provided as tokens. When this class is initialized,
  * these arguments would be parsed using JCommander, see [GrepArguments] for details.
+ * @param context context that has information about current directory.
  */
 class GrepCommand(rawArgumentTokens: List<String>, private val context: Context) : Command {
 

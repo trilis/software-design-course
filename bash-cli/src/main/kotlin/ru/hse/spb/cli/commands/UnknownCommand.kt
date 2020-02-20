@@ -11,6 +11,7 @@ import java.io.InputStreamReader
  *
  * @param name name of this command.
  * @param arguments arguments of this command.
+ * @param context context that has information about current directory
  */
 class UnknownCommand(
     private val name: String,

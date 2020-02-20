@@ -5,6 +5,8 @@ import java.io.File
 
 /**
  * This command simulates behaviour of 'pwd' bash command, printing current directory.
+ *
+ * @param context context that has information about current directory.
  */
 class PwdCommand(private val context: Context) : Command {
 

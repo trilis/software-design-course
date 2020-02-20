@@ -12,6 +12,7 @@ import java.util.*
  * counting lines, words and bytes of provided texts.
  *
  * @param fileNames names of files to be examined.
+ * @param context context that has information about current directory
  */
 class WcCommand(private val fileNames: List<String>, private val context: Context) : Command {
 
