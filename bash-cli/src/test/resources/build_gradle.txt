@@ -24,12 +24,6 @@ tasks.generateGrammarSource {
     outputDirectory = File("$buildDir/generated-src/antlr/main/ru/hse/spb/cli/parser")
 }
 
-task("launch", JavaExec::class)  {
-    dependsOn(":build")
-    main = "ru.hse.spb.cli.MainKt"
-    classpath = sourceSets["main"].runtimeClasspath
-    standardInput = System.`in`
-}
 
 tasks {
     compileKotlin {
